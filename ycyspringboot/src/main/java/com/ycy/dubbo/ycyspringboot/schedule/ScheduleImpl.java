@@ -1,17 +1,13 @@
-package com.ycy.ycyspringboot.controller;
+package com.ycy.dubbo.ycyspringboot.schedule;
 
-import com.ycy.ycyspringboot.YcyspringbootApplication;
+import com.ycy.dubbo.ycyspringboot.YcyspringbootApplication;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.logging.SimpleFormatter;
 
 
 /**
@@ -20,8 +16,8 @@ import java.util.logging.SimpleFormatter;
  * (2)　只是说是 fixedRate 任务两次执行时间间隔是任务的开始点，而 fixedDelay 的间隔是前次任务的结束与下次任务的开始。
  * (3) 当前任务没有完成,即使到了执行时间也会等待
  */
-//@Component
-public class ScheduleController {
+@Component
+public class ScheduleImpl {
 
   /**
    * 每分钟触发一次?
@@ -69,37 +65,37 @@ public class ScheduleController {
   }
 
 
-  @Scheduled(cron = "1/1 * * * * ? ")
-  public void schedule4() {
-    ScheduledThreadPoolExecutor threadPoolExecutor = (ScheduledThreadPoolExecutor) YcyspringbootApplication.threadPoolExecutor.getConcurrentExecutor();
-    /**
-     * 线程池需要执行的任务数
-     */
-    long taskCount = threadPoolExecutor.getTaskCount();
-    /**
-     * 线程池在运行过程中已完成的任务数
-     */
-    long completedTaskCount = threadPoolExecutor.getCompletedTaskCount();
-    /**
-     * 曾经创建过的最大线程数
-     */
-    long largestPoolSize = threadPoolExecutor.getLargestPoolSize();
-    /**
-     * 线程池里的线程数量
-     */
-    long poolSize = threadPoolExecutor.getPoolSize();
-    /**
-     * 线程池里活跃的线程数量
-     */
-    long activeCount = threadPoolExecutor.getActiveCount();
-
-
-  /*  System.out.println(String.format("总共执行了{%d},已经完成{%d},最大{%d},目前线程池{%d},活跃{%d}",
-            taskCount
-            , completedTaskCount
-            , largestPoolSize
-            , poolSize
-            , activeCount));*/
-
-  }
+//  @Scheduled(cron = "1/1 * * * * ? ")
+//  public void schedule4() {
+//    ScheduledThreadPoolExecutor threadPoolExecutor = (ScheduledThreadPoolExecutor) YcyspringbootApplication.threadPoolExecutor.getConcurrentExecutor();
+//    /**
+//     * 线程池需要执行的任务数
+//     */
+//    long taskCount = threadPoolExecutor.getTaskCount();
+//    /**
+//     * 线程池在运行过程中已完成的任务数
+//     */
+//    long completedTaskCount = threadPoolExecutor.getCompletedTaskCount();
+//    /**
+//     * 曾经创建过的最大线程数
+//     */
+//    long largestPoolSize = threadPoolExecutor.getLargestPoolSize();
+//    /**
+//     * 线程池里的线程数量
+//     */
+//    long poolSize = threadPoolExecutor.getPoolSize();
+//    /**
+//     * 线程池里活跃的线程数量
+//     */
+//    long activeCount = threadPoolExecutor.getActiveCount();
+//
+//
+//  /*  System.out.println(String.format("总共执行了{%d},已经完成{%d},最大{%d},目前线程池{%d},活跃{%d}",
+//            taskCount
+//            , completedTaskCount
+//            , largestPoolSize
+//            , poolSize
+//            , activeCount));*/
+//
+//  }
 }

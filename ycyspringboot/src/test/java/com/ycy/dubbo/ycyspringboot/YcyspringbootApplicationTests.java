@@ -1,4 +1,4 @@
-package com.ycy.ycyspringboot;
+package com.ycy.dubbo.ycyspringboot;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

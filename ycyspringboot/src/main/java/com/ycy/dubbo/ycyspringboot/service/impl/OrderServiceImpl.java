@@ -1,6 +1,6 @@
-package com.ycy.ycyspringboot.service.impl;
+package com.ycy.dubbo.ycyspringboot.service.impl;
 
-import com.ycy.ycyspringboot.service.OrderService;
+import com.ycy.dubbo.ycyspringboot.service.OrderService;
 import org.springframework.stereotype.Service;
 
 @Service("orderServiceImpl")
