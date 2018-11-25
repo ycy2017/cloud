@@ -13,11 +13,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * springbootapplication 高数spring这是一个配置类 功能和application.xml一样
+ * springbootapplication 告诉spring这是一个配置类 功能和application.xml一样
  */
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-//@EnableScheduling
+
 @ImportResource(locations = {"classpath:springcontext.xml"})
+//@EnableScheduling
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class YcyspringbootApplication {
 
 //  public static ConcurrentTaskScheduler threadPoolExecutor;
