@@ -11,6 +11,9 @@
     <modules>
         <module>dubboservice</module>
         <module>ycyspringboot</module>
+        <module>ycyzookeeper</module>
+        <module>ycylucene</module>
+        <module>ycyio</module>
     </modules>
 
     <dependencies>

@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-@Component("vacationScheduleImpl")
+//@Component("vacationScheduleImpl")
 public class VacationScheduleImpl extends AbstractSchedular {
 
   public VacationScheduleImpl() {

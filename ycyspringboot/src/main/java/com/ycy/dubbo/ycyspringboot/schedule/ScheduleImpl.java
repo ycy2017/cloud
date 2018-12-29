@@ -16,13 +16,13 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  * (2)　只是说是 fixedRate 任务两次执行时间间隔是任务的开始点，而 fixedDelay 的间隔是前次任务的结束与下次任务的开始。
  * (3) 当前任务没有完成,即使到了执行时间也会等待
  */
-//@Component
+@Component
 public class ScheduleImpl {
 
   /**
    * 每分钟触发一次?
    */
-  @Scheduled(cron = "2/10 * * * * ? ")
+//  @Scheduled(cron = "2/10 * * * * ? ")
   public void schedule() {
     System.out.println(Thread.currentThread().getName() + " 任务1 start time " + LocalTime.now() + "");
   }
@@ -48,7 +48,7 @@ public class ScheduleImpl {
     System.out.println(Thread.currentThread().getName() + " 任务2 end time " + simpleFormatter.format(en) + " ,cost " + (end - start));
   }
 
-  @Scheduled(cron = "2/2 * * * * ? ")
+//  @Scheduled(cron = "2/2 * * * * ? ")
   public void schedule3() {
     SimpleDateFormat simpleFormatter = new SimpleDateFormat("HH:mm:ss");
     Long start = System.currentTimeMillis();

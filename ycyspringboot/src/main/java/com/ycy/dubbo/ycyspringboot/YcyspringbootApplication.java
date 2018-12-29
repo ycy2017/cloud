@@ -16,9 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * springbootapplication 告诉spring这是一个配置类 功能和application.xml一样
  */
 
-@ImportResource(locations = {"classpath:springcontext.xml"})
-//@EnableScheduling
+//@ImportResource(locations = {"classpath:springcontext.xml"})
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@EnableScheduling
 public class YcyspringbootApplication {
 
 //  public static ConcurrentTaskScheduler threadPoolExecutor;

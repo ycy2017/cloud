@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller
+//@Controller
 public class ScheduleController {
 
   private  final Logger logger = LoggerFactory.getLogger(this.getClass().getName());

@@ -10,7 +10,6 @@ package com.ycy.dubbo.ycyspringboot.schedule.ycy;
 *
 * ycy包 会补充这一点
 *
-*
-* 注意:
+* 缺点: full 执行的优先级应该 比diff高
 *
 * */
