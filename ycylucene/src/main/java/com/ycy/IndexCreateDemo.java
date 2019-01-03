@@ -2,12 +2,10 @@ package com.ycy;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
+import org.apache.lucene.document.*;
 import org.apache.lucene.index.*;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
 
 import java.io.*;
@@ -16,47 +14,67 @@ import java.nio.file.Paths;
 
 public class IndexCreateDemo {
 
-  static String filed1 = "filename";
+  static String FIELD1 = "filename";
 
-  static String key2 = "context";
+  static String FIELD2 = "context";
 
   static String srcpath = "C:\\Users\\Administrator\\Desktop\\conf\\luceneindex";
+
   static String indexpath = "C:\\Users\\Administrator\\Desktop\\conf\\luceneindex\\ix";
 
   public static void main(String[] args) {
 
-    File file = new File(srcpath);
-
-    Path path = Paths.get(indexpath);
     try {
-      Directory directory = new SimpleFSDirectory(path);
+      System.out.println("start create index ... ");
+
+      Path path = Paths.get(indexpath);
+      Directory directory = FSDirectory.open(path);
       Analyzer standardAnalyzer = new StandardAnalyzer();
       IndexWriterConfig indexWriterConfig = new IndexWriterConfig(standardAnalyzer);
       IndexWriter indexWriter = new IndexWriter(directory, indexWriterConfig);
-
+      indexWriter.deleteAll();
+      indexWriter.commit();
+      File file = new File(srcpath);
       for (File listFile : file.listFiles()) {
         if (listFile.isFile() && listFile.getName().endsWith("txt")) {
           String absolutePath = listFile.getAbsolutePath();
-          System.out.println(absolutePath);
+          System.out.println(absolutePath+" "+  getContent(absolutePath));
           Document document = new Document();
 
-//          String text = "This is the text to be indexed.";
-//          document.add(new Field(filed1, text, TextField.TYPE_STORED));
+          //复杂玩法
+//          FieldType fieldType = new FieldType();
+//          fieldType.setStored(true);
+//          fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
+//          fieldType.setTokenized(true);//是否分词
+//          IndexableField indexableField1 = new Field(FIELD1, absolutePath,fieldType);
+//
+//          FieldType fieldType2 = new FieldType();
+//          fieldType2.setStored(true);
+//          fieldType2.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
+//          fieldType2.setTokenized(true);//是否分词
+//          IndexableField indexableField2 = new Field(FIELD1,  getContent(absolutePath),fieldType2);
 
-//          Field filenamefield = new StringField(filed1, absolutePath, TextField.TYPE_STORED);
-//          Field filepathfield = new StringField(key2, absolutePath, TextField.TYPE_STORED);
-          //Field 和 StringField 的区别???
-          Field filenamefield = new Field(filed1, absolutePath, TextField.TYPE_STORED);
-          Field filepathfield = new Field(key2, getContent(absolutePath), TextField.TYPE_STORED);
+          //一般玩法
+//          Field indexableField1 = new Field(FIELD1, absolutePath, TextField.TYPE_STORED);
+//          Field indexableField2 = new Field(FIELD2, getContent(absolutePath), TextField.TYPE_STORED);
 
-          document.add(filenamefield);
-          document.add(filepathfield);
+          //简单玩法
+          //TextField 和 StringField 的区别???  TextField分词
+          IndexableField indexableField1 = new TextField(FIELD1, absolutePath, Field.Store.YES);
+          IndexableField indexableField2 = new TextField(FIELD2,  getContent(absolutePath),Field.Store.YES);
+
+//          IndexableField indexableField1 = new StringField(FIELD1, absolutePath, Field.Store.YES);
+//          IndexableField indexableField2 = new StringField(FIELD1,  getContent(absolutePath),Field.Store.YES);
+
+
+          document.add(indexableField1);
+          document.add(indexableField2);
           indexWriter.addDocument(document);
         }
-
       }
+      indexWriter.commit();
       indexWriter.close();
-
+      System.out.println("end create index ... ");
     } catch (IOException e) {
       e.printStackTrace();
     }
