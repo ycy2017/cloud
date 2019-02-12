@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Built-By: Administrator
+Class-Path: lib/fastjson-1.2.41.jar
+Created-By: Apache Maven 3.3.9
+Build-Jdk: 1.8.0_45
+Main-Class: cn.dubby.maven.jar.plugin.Main
+

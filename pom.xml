@@ -15,6 +15,7 @@
         <module>ycylucene</module>
         <module>ycyio</module>
         <module>httpnetty</module>
+        <module>mavenplay</module>
     </modules>
 
     <properties>
