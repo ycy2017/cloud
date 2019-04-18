@@ -36,10 +36,19 @@ public abstract class AbstractTask implements Runnable {
    */
   private AtomicBoolean oneLock = null;
 
+  public AbstractTask(AtomicBoolean oneLock) {
+    this.oneLock = oneLock;
+  }
 
-  public void wakeUp(){
+
+  public void wakeUp() {
     wakeUp.set(true);
   }
+
+  public boolean isWakeUp() {
+    return wakeUp.get();
+  }
+
 
   public void setOneLock(AtomicBoolean oneLock) {
     this.oneLock = oneLock;
@@ -73,7 +82,7 @@ public abstract class AbstractTask implements Runnable {
   /**
    * 是否到了任务可以运行的时间了
 
-  public abstract boolean isOverInterval();
+   public abstract boolean isOverInterval();
    */
   /**
    * 业务自己实现该方法
@@ -94,49 +103,49 @@ public abstract class AbstractTask implements Runnable {
   @Override
   public final void run() {
     while (true) {
-      while(!wakeUp.getAndSet(false)){
+      while (wakeUp.get()) {//唤醒
+        if (lock()) {//尝试获取lock
+          try {
+            if (initDbPoolStatus.SUCCESS == initDbPool()) {
+              executorAndRecordStatus();
+            } else {
+              logger.error("initDbPool fail! wait for next excute.");
+            }
+          } catch (Throwable t) {
+            logger.error("executeTask failed", t);
+            if (taskExcpAct == TaskExceptionAction.STOP_WITH_TASK_ERROR) {
+              logger.error("stop the task since");
+              return;
+            }
+          } finally {
+            relaseLock();//释放
+            wakeUp.set(true);
+          }
+        }
+
         try {
           Thread.sleep(3000);//放慢空轮询
         } catch (InterruptedException e) {
-          logger.error(" ",e);
+          logger.error(" ", e);
         }
       }
-      if (lock()) {//激活之后,尝试获取lock
-        try {
-          if (initDbPoolStatus.SUCCESS == initDbPool()) {
-            executorAndRecordStatus();
-          } else {
-            logger.error("initDbPool fail! wait for next excute.");
-          }
-        } catch (Throwable t) {
-          logger.error("executeTask failed", t);
-          if (taskExcpAct == TaskExceptionAction.STOP_WITH_TASK_ERROR) {
-            logger.error("stop the task since");
-            return;
-          }
-        } finally {
-          relaseLock();//释放
-        }
+
+      try {
+        Thread.sleep(3000);//放慢空轮询
+      } catch (InterruptedException e) {
+        logger.error(" ", e);
       }
-//      try {
-//        Thread.sleep(5000);//放慢空轮询
-//      } catch (InterruptedException e) {
-//        logger.error(" ",e);
-//      }
     }
   }
 
   public void executorAndRecordStatus() {
     long start = System.currentTimeMillis();
     startTime = SIMPLE_DATE_FORMAT.format(new Date(start));
-    isRunning = true;
-    logger.info("start at {}" , startTime);
+    logger.info("start at {}", startTime);
     executeTask();
-
-    isRunning = false;
     long end = System.currentTimeMillis();
     endTime = SIMPLE_DATE_FORMAT.format(new Date(end));
-    logger.info("end at {} ,cost {}" , startTime,(end - start));
+    logger.info("end at {} ,cost {}", startTime, (end - start));
   }
 
   protected enum TaskExceptionAction {

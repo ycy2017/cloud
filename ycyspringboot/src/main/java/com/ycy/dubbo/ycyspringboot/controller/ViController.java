@@ -1,5 +1,6 @@
-package com.ycy.dubbo.ycyspringboot.schedule.rjdu.impl;
+package com.ycy.dubbo.ycyspringboot.controller;
 
+import com.ycy.dubbo.ycyspringboot.schedule.rjdu.impl.TestScheduleImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

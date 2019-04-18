@@ -1,4 +1,4 @@
-package com.ycy.dubbo.ycyspringboot.schedule.ycy;
+package com.ycy.dubbo.ycyspringboot.util;
 
 import java.sql.Timestamp;
 import java.text.ParseException;

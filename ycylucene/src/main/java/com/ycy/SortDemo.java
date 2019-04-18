@@ -22,7 +22,8 @@ public class SortDemo {
   @Test
   public void doTest() {
     try {
-      Analyzer analyzer = new AnsjAnalyzer(AnsjAnalyzer.TYPE.index);
+//      Analyzer analyzer = new AnsjAnalyzer(AnsjAnalyzer.TYPE.index);
+      Analyzer analyzer = new StandardAnalyzer();
       PerFieldAnalyzerWrapper perFieldAnalyzerWrapper = new PerFieldAnalyzerWrapper(analyzer);
       Path path = Paths.get("C:\\Users\\Administrator\\Desktop\\conf\\luceneindex2");
       Directory directory = FSDirectory.open(path);

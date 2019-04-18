@@ -32,7 +32,7 @@ public class ScheduleImpl {
    * <p>
    * 调度任务只有一个线程
    */
-  @Scheduled(cron = "2/10 * * * * ? ")
+//  @Scheduled(cron = "2/10 * * * * ? ")
   public void schedule2() {
     SimpleDateFormat simpleFormatter = new SimpleDateFormat("HH:mm:ss");
     Long start = System.currentTimeMillis();

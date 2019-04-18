@@ -22,13 +22,11 @@ public class IndexQueryDemo {
 
 
   public static void main(String[] args) {
-    /**
-     *
-     */
+
     search0();
     search1();
-    search2();
-    search3();
+//    search2();
+//    search3();
   }
 
 
@@ -61,6 +59,8 @@ public class IndexQueryDemo {
       PhraseQuery.Builder builder = new PhraseQuery.Builder();
       builder.add(new Term("context", "hello"));
       builder.add(new Term("context", "word"));
+      //默认情况下slop 为0, 所以只能查到hello word
+      builder.setSlop(100                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           );
       PhraseQuery build = builder.build();
       search(build, 1);
     } catch (Exception e) {

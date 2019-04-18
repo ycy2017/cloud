@@ -91,9 +91,9 @@ public abstract class AbstractSchedular implements Runnable {
   /**
    *
    */
-  public void doTask(int abstractTaskIndex) {
+  public void wakeUpTask(int abstractTaskIndex) {
     AbstractTask abstractTask = allTasks.get(abstractTaskIndex);
-    if (shouldScheduleTask(abstractTask)) {
+    if (shouldWakeUpTask(abstractTask)) {
         abstractTask.wakeUp();//获取lock,才能获取有执行任务的权利
       }
   }
@@ -103,19 +103,26 @@ public abstract class AbstractSchedular implements Runnable {
 
   public void shouldFullscheduleTasks(List<AbstractTask> tasks) {
     for (AbstractTask task : tasks) {
-      if (shouldScheduleTask(task)) {
+      if (shouldWakeUpTask(task)) {
         task.lock();//获取lock,才能获取有执行任务的权利
       }
     }
   }   */
 
-  private boolean shouldScheduleTask(AbstractTask task) {
-//    if (task.isWait()) {
-//      // 如果已经处于唤醒状态(非等待状态),那么无需重复ScheduleTask
-//      return true;
-//    }
+  /**
+   *
+   * @param task
+   * @return
+   */
+  private boolean shouldWakeUpTask(AbstractTask task) {
+
     if (!task.isValid()) {
       // 该任务暂时无效,不执行
+      return false;
+    }
+
+    if (task.isWakeUp()) {
+      // 如果已经处于唤醒状态(非等待状态),那么无需重复ScheduleTask
       return false;
     }
 

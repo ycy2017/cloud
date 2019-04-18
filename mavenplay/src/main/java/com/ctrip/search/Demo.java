@@ -41,9 +41,6 @@ public class Demo {
 
   }
 
-  public void
-
-
   public String getName() {
     return name;
   }
