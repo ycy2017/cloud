@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Component("vacationScheduleImpl")
+//@Component("vacationScheduleImpl")
 public class VacationScheduleImpl extends AbstractSchedular {
 
   Logger logger = LoggerFactory.getLogger(VacationScheduleImpl.class);

@@ -23,7 +23,7 @@ public class DASUtils {
    * @throws ParseException
    */
   @SuppressWarnings("deprecation")
-  public static Date todayTime(String timeStr) throws ParseException {
+  public static Date todayTime(String timeStr) throws Exception {
     Date now = new Date();
     now.setHours(0);
     now.setSeconds(0);
@@ -39,7 +39,7 @@ public class DASUtils {
         return new Date(todaystart + (h * 3600 + m * 60 + s) * 1000);
       }
     }
-    throw new ParseException("time string error:" + timeStr + ", use HH:mm:ss", 0);
+    throw new Exception("time string error:" + timeStr + ", use HH:mm:ss");
   }
 
 }

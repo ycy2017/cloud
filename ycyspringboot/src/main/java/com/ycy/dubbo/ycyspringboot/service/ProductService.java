@@ -4,10 +4,8 @@ import com.ycy.dubbo.ycyspringboot.entity.Product;
 
 import java.util.List;
 
-public interface OrderService {
+public interface ProductService {
 
-  String findOrder();
-
-  public List<Product> get(String Type,List<Long> list);
+  public List<Product> get(List<Long> list);
 
 }

@@ -9,7 +9,6 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-
 /**
  * spring 的调度任务
  * (1)  被加了@Schedule的方法,调用任务是由线程池来执行的,
@@ -48,7 +47,7 @@ public class ScheduleImpl {
     System.out.println(Thread.currentThread().getName() + " 任务2 end time " + simpleFormatter.format(en) + " ,cost " + (end - start));
   }
 
-//  @Scheduled(cron = "2/2 * * * * ? ")
+  //  @Scheduled(cron = "2/2 * * * * ? ")
   public void schedule3() {
     SimpleDateFormat simpleFormatter = new SimpleDateFormat("HH:mm:ss");
     Long start = System.currentTimeMillis();
@@ -65,37 +64,4 @@ public class ScheduleImpl {
   }
 
 
-//  @Scheduled(cron = "1/1 * * * * ? ")
-//  public void schedule4() {
-//    ScheduledThreadPoolExecutor threadPoolExecutor = (ScheduledThreadPoolExecutor) YcyspringbootApplication.threadPoolExecutor.getConcurrentExecutor();
-//    /**
-//     * 线程池需要执行的任务数
-//     */
-//    long taskCount = threadPoolExecutor.getTaskCount();
-//    /**
-//     * 线程池在运行过程中已完成的任务数
-//     */
-//    long completedTaskCount = threadPoolExecutor.getCompletedTaskCount();
-//    /**
-//     * 曾经创建过的最大线程数
-//     */
-//    long largestPoolSize = threadPoolExecutor.getLargestPoolSize();
-//    /**
-//     * 线程池里的线程数量
-//     */
-//    long poolSize = threadPoolExecutor.getPoolSize();
-//    /**
-//     * 线程池里活跃的线程数量
-//     */
-//    long activeCount = threadPoolExecutor.getActiveCount();
-//
-//
-//  /*  System.out.println(String.format("总共执行了{%d},已经完成{%d},最大{%d},目前线程池{%d},活跃{%d}",
-//            taskCount
-//            , completedTaskCount
-//            , largestPoolSize
-//            , poolSize
-//            , activeCount));*/
-//
-//  }
 }
