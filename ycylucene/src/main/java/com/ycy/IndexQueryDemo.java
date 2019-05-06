@@ -35,11 +35,11 @@ public class IndexQueryDemo {
    */
   public static void search0() {
     try {
-      String queryStr = "context:hello";
+      String queryStr = "name:跳脱";
       Analyzer analyzer = new StandardAnalyzer();
       QueryParser queryParser = new QueryParser(IndexCreateDemo.FIELD1, analyzer);
       Query parse = queryParser.parse(queryStr);
-      search(parse, 0);
+      search(parse,20,Sort.RELEVANCE);//
     } catch (ParseException e) {
       e.printStackTrace();
     }
@@ -62,7 +62,7 @@ public class IndexQueryDemo {
       //默认情况下slop 为0, 所以只能查到hello word
       builder.setSlop(100                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           );
       PhraseQuery build = builder.build();
-      search(build, 1);
+      search(build, 1,null);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -81,7 +81,7 @@ public class IndexQueryDemo {
       Analyzer analyzer = new SimpleAnalyzer();
       QueryParser queryParser = new QueryParser(IndexCreateDemo.FIELD1, analyzer);
       Query parse = queryParser.parse(queryStr);
-      search(parse, 2);
+      search(parse, 2,null);
 
 //      BooleanQuery.Builder builder = new BooleanQuery.Builder();
 //      builder.add(new TermQuery(new Term("context", "hello")), BooleanClause.Occur.MUST);
@@ -109,28 +109,27 @@ public class IndexQueryDemo {
       builder.add(new TermQuery(new Term("context", "word")), BooleanClause.Occur.MUST_NOT);
       BooleanQuery build = builder.build();
 
-      search(build, 3);
+      search(build, 3,null);
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
 
-  public static void search(Query query, int j) {
+  public static void search(Query query, int j,Sort sort) {
     try {
-      System.out.println("start search ... " + j);
       Path path = Paths.get(IndexCreateDemo.indexpath);
       IndexReader indexReader = DirectoryReader.open(FSDirectory.open(path));
       IndexSearcher isearch = new IndexSearcher(indexReader);
-      TopDocs search = isearch.search(query, 10);
+
+      TopDocs search = isearch.search(query, j,sort);
+//      TopDocs search = isearch.search(query, j);
 //        TopDocs search = isearch.doc( );
       System.out.println("共检索出 " + search.totalHits + " 条记录");
-      ScoreDoc[] hits = search.scoreDocs;
-      for (int i = 0; i < hits.length; i++) {
-        Document hitDoc = isearch.doc(hits[i].doc);
-        System.out.println("docid" + hits[i].doc + "  " + hitDoc);
+      for (ScoreDoc scoreDoc : search.scoreDocs) {
+        Document doc = isearch.doc(scoreDoc.doc);
+        System.out.println("docid " + scoreDoc.doc + " score:" + scoreDoc.score + " " + doc);
       }
-      System.out.println("end search ... ");
     } catch (IOException e) {
       e.printStackTrace();
     }

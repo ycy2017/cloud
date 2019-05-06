@@ -1,13 +1,19 @@
 package com.ycy;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ycy.entity.ShopBean;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
 
+import java.awt.*;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,7 +24,7 @@ public class IndexCreateDemo {
 
   static String FIELD2 = "context";
 
-  static String srcpath = "C:\\Users\\Administrator\\Desktop\\conf\\luceneindex";
+  static String srcpath = "C:\\Users\\Administrator\\Desktop\\conf\\luceneindex\\json.txt";
 
   static String indexpath = "C:\\Users\\Administrator\\Desktop\\conf\\luceneindex\\ix";
 
@@ -34,8 +40,8 @@ public class IndexCreateDemo {
       IndexWriter indexWriter = new IndexWriter(directory, indexWriterConfig);
       indexWriter.deleteAll();
       indexWriter.commit();
-      File file = new File(srcpath);
-      for (File listFile : file.listFiles()) {
+ /*      File file = new File(srcpath);
+     for (File listFile : file.listFiles()) {
         if (listFile.isFile() && listFile.getName().endsWith("txt")) {
           String absolutePath = listFile.getAbsolutePath();
           System.out.println(absolutePath+" "+  getContent(absolutePath));
@@ -66,20 +72,56 @@ public class IndexCreateDemo {
 //          IndexableField indexableField1 = new StringField(FIELD1, absolutePath, Field.Store.YES);
 //          IndexableField indexableField2 = new StringField(FIELD1,  getContent(absolutePath),Field.Store.YES);
 
-
           document.add(indexableField1);
           document.add(indexableField2);
           indexWriter.addDocument(document);
         }
+      }*/
+
+      JsonFactory jsonFactory = new JsonFactory();
+      jsonFactory.enable(JsonParser.Feature.ALLOW_COMMENTS);
+      ObjectMapper mapper = new ObjectMapper(jsonFactory);
+      BufferedReader br = new BufferedReader(new InputStreamReader(
+              IndexCreateDemo.class.getClassLoader().getResourceAsStream("shop.json")));
+      String line;
+      while ((line = br.readLine()) != null) {
+        ShopBean shopBean = mapper.readValue(line, ShopBean.class);
+
+        //这里的x,y即经纬度，x为Longitude(经度),y为Latitude(纬度)
+        Document document = newSampleDocument(shopBean.getId(), shopBean.getName(),shopBean.getShape() ,null);
+        indexWriter.addDocument(document);
       }
+
+
       indexWriter.commit();
       indexWriter.close();
       System.out.println("end create index ... ");
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  private static Document newSampleDocument(int id, String title, String shapeEnclosure ,Shape... shapes) {
+    Document doc = new Document();
+    doc.add(new StoredField("id", id));
+    doc.add(new NumericDocValuesField("id", id));
+    doc.add(new TextField("name", title, Field.Store.YES));
+    doc.add(new TextField("shape", shapeEnclosure, Field.Store.YES));
 
 
+    // Potentially more than one shape in this field is supported by some
+    // strategies; see the javadocs of the SpatialStrategy impl to see.
+   /* for (Shape shape : shapes) {
+      for (Field f : strategy.createIndexableFields(shape)) {
+        doc.add(f);
+      }
+      // store it too; the format is up to you
+      // (assume point in this example)
+      Point pt = (Point) shape;
+      doc.add(new StoredField(strategy.getFieldName(), pt.getX() + " " + pt.getY()));
+    }
+*/
+    return doc;
   }
 
   public static String getContent(String bsolutePath){
