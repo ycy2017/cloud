@@ -1,5 +1,7 @@
 package com.ycy.entity;
 
+import java.util.Date;
+
 public class ShopBean {
 
   private int id;
@@ -7,7 +9,10 @@ public class ShopBean {
   private double longitude;
   private double latitude;
   private String address;
-  private String shape;
+  public String shape;
+
+  public String openDate;
+
 
   public String getShape() {
     return shape;

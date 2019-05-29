@@ -1,7 +1,6 @@
-package com.ycy.query;
+package com.ycy.lucene.sort;
 
-import com.ycy.IndexCreateDemo;
-import com.ycy.IndexQueryDemo;
+import com.ycy.lucene.index.IndexReadDemo;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -28,7 +27,7 @@ public class QueryBySortDemo {
       Analyzer analyzer = new StandardAnalyzer();
       QueryParser queryParser = new QueryParser("name", analyzer);
       Query parse = queryParser.parse(queryStr);
-      IndexQueryDemo.search(parse, 20, Sort.INDEXORDER);//docid 排序
+      IndexReadDemo.search(parse, 20, Sort.INDEXORDER);//docid 排序
     } catch (ParseException e) {
       e.printStackTrace();
     }
@@ -40,10 +39,13 @@ public class QueryBySortDemo {
       Analyzer analyzer = new StandardAnalyzer();
       QueryParser queryParser = new QueryParser("name", analyzer);
       Query parse = queryParser.parse(queryStr);
-      IndexQueryDemo.search(parse, 5, new Sort(new SortField("id", SortField.Type.INT)));//按照id排序
+//      BasicQuery.search(parse, 5, new Sort(new SortField("id", SortField.Type.INT)));//按照id排序, 升序
+      IndexReadDemo.search(parse, 5, new Sort(new SortField("id", SortField.Type.INT, true)));//按照id排序, 降序
     } catch (ParseException e) {
       e.printStackTrace();
     }
   }
+
+
 
 }
